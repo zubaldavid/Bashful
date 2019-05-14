@@ -1,0 +1,69 @@
+[core]
+  autocrlf = input
+  safecrlf = false
+  excludesfile = ~/.gitignore
+  editor = vim
+
+[alias]
+  # General tools
+  co = checkout
+  br = branch
+  st = status -s
+  up = pull --rebase   # Safely update from the upstream branch (usually a remote branch).
+  cm = commit -m       
+  psh = push origin
+  pll = pull origin master
+
+  # Prune (deletes any local branch which has been deleted from the remote)
+  prune = fetch --prune
+
+  # Undo - resets the commit to what was there previously
+  undo = reset --soft HEAD^
+
+  # Stash all (including new files)
+  stash-all = stash save --include-untracked
+
+  ### Logs
+  lg = log --graph --pretty=format:\"%Cred%h%Creset - %C(yellow)%an%Creset - %s %Cblue%d%Creset %Cgreen(%cr)%Creset\" --abbrev-commit
+  
+  last = log -1 --name-status  # Show the latest commit message and files
+  lastd = log -1 -p   # Show the latest commit and a full diff. Note: the -p shows a full patch.
+
+  # Show logs with all files listed
+  logstat = log --name-status
+
+  ### Diffing
+  diffc = diff --cached
+  dt = difftool
+  lastdt = difftool HEAD~1
+  dtc = difftool --cached --dir-diff  # Do full directory diff, not just single file
+  
+  ### Search tools
+  # Grep the entire source tree for a string/regex
+  # grepall = '!sh show $(git rev-list --all)'
+  grepall = "!sh -c 'git grep $1 $(git rev-list --all)' -"
+
+  ### Other tools
+  # Show all git aliases
+  alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ = \\2/' | sort
+
+  ### Branch tools
+
+  # Show me commits that I haven't pushed to the upstream yet (usually the remote branch).
+  newcommits = !git lg @{u}..
+
+  # Show me commits from the upstream that I haven't merged in yet (usually the remote branch).
+  whatsnew = !git lg ..@{u}
+
+  # Completely revert my branch to the tracked branch.
+  revert-entirely = reset --hard @{u}
+
+  ### Utilities
+  current-branch = rev-parse --abbrev-ref HEAD
+  tracking-branch = !git for-each-ref --format='%(upstream:short)' $(git symbolic-ref HEAD)
+
+[commit]
+
+  # Trusted signature for commits
+  # gpgSign = true
+
